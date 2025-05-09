@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { StreamChat } from 'stream-chat';
-import { hashSync } from 'bcrypt';
+import { hashSync, compareSync } from 'bcrypt';
 import { USERS, UserRole } from '../models/user';
 import dotenv from 'dotenv';
 import { sign } from 'jsonwebtoken';
@@ -79,19 +79,44 @@ router.post('/register', async (req: Request, res: Response): Promise<any> => {
 });
 
 // Login endpoint
+// router.post('/login', async (req: Request, res: Response): Promise<any> => {
+//   const { email, password } = req.body;
+//   const user = USERS.find((user) => user.email === email);
+//   const hashed_password = hashSync(password, SALT_ROUNDS);
+
+//   if (!user || user.hashed_password !== hashed_password) {
+//     return res.status(400).json({
+//       message: 'Invalid credentials.',
+//     });
+//   }
+
+//   const token = client.createToken(user.id);
+
+//   const jwt = sign({ userId: user.id }, process.env.JWT_SECRET!);
+
+//   return res.json({
+//     token,
+//     jwt,
+//     user: {
+//       id: user.id,
+//       email: user.email,
+//       role: user.role,
+//     },
+//   });
+// });
+
+
 router.post('/login', async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
   const user = USERS.find((user) => user.email === email);
-  const hashed_password = hashSync(password, SALT_ROUNDS);
 
-  if (!user || user.hashed_password !== hashed_password) {
+  if (!user || !compareSync(password, user.hashed_password)) {
     return res.status(400).json({
       message: 'Invalid credentials.',
     });
   }
 
   const token = client.createToken(user.id);
-
   const jwt = sign({ userId: user.id }, process.env.JWT_SECRET!);
 
   return res.json({

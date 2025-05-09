@@ -35,13 +35,13 @@ export const USERS: User[] = [
   },
   {
     email: 'simon@galaxies.dev',
-    id: '41m3lxk',
+    id: 'unrbkfv',
     role: UserRole.Therapist,
-    hashed_password: '$2b$10$.MftzcPPsR5TUTYRyWGyQu9H9Fd3Q6olBlccI1qIAY3qXH7OQ.bQO', // dummy "123456"
+    hashed_password: '$2b$10$dpS70GLxAMN/8R4VODKAaeVJk2GOA7up8x34m7VXmBJvkczHOPAfW', // dummy "123456"
   },
   {
     email: 'anikala@galaxies.dev',
-    id: 'a9k2bnd',
+    id: 'odq5wyw',
     role: UserRole.Client,
     hashed_password: '$2b$10$.MftzcPPsR5TUTYRyWGyQu9H9Fd3Q6olBlccI1qIAY3qXH7OQ.bQO', // dummy "123456"
   },
