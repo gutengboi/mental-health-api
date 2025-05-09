@@ -9,7 +9,8 @@ dotenv.config();
 
 const router = Router();
 
-const SALT = process.env.SALT as string;
+// const SALT = process.env.SALT as string;
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS || '10', 10);
 const streamApiKey = process.env.STREAM_API_KEY;
 const streamApiSecret = process.env.STREAM_API_SECRET;
 
@@ -44,7 +45,7 @@ router.post('/register', async (req: Request, res: Response): Promise<any> => {
   }
 
   try {
-    const hashed_password = hashSync(password, SALT);
+    const hashed_password = hashSync(password, SALT_ROUNDS);
     const id = Math.random().toString(36).substring(2, 9);
     const user = {
       id,
@@ -81,7 +82,7 @@ router.post('/register', async (req: Request, res: Response): Promise<any> => {
 router.post('/login', async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
   const user = USERS.find((user) => user.email === email);
-  const hashed_password = hashSync(password, SALT);
+  const hashed_password = hashSync(password, SALT_ROUNDS);
 
   if (!user || user.hashed_password !== hashed_password) {
     return res.status(400).json({
@@ -108,7 +109,7 @@ router.post('/login', async (req: Request, res: Response): Promise<any> => {
 router.post('/create-therapist', async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
 
-  const hashed_password = hashSync(password, SALT);
+  const hashed_password = hashSync(password, SALT_ROUNDS);
   const id = Math.random().toString(36).substring(2, 9);
   const user = {
     id,
